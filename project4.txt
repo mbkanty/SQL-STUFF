@@ -1,0 +1,2877 @@
+PROJECT 4
+
+1.SQL> create table emp_test as select * from hr.employees;
+
+Table created.
+
+SQL> desc emp_test;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMPLOYEE_ID                                        NUMBER(6)
+ FIRST_NAME                                         VARCHAR2(20)
+ LAST_NAME                                 NOT NULL VARCHAR2(25)
+ EMAIL                                     NOT NULL VARCHAR2(25)
+ PHONE_NUMBER                                       VARCHAR2(20)
+ HIRE_DATE                                 NOT NULL DATE
+ JOB_ID                                    NOT NULL VARCHAR2(10)
+ SALARY                                             NUMBER(8,2)
+ COMMISSION_PCT                                     NUMBER(2,2)
+ MANAGER_ID                                         NUMBER(6)
+ DEPARTMENT_ID                                      NUMBER(4)
+
+2.SQL> create table emp_test2(firstname varchar2(20),lastname varchar2(20), employee_id number, userid varchar2(20), salary number);
+
+Table created.
+
+SQL> desc emp_test2;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ FIRSTNAME                                          VARCHAR2(20)
+ LASTNAME                                           VARCHAR2(20)
+ EMPLOYEE_ID                                        NUMBER
+ USERID                                             VARCHAR2(20)
+ SALARY                                             NUMBER
+
+
+3.SQL> show user
+USER is "SCOTT"
+SQL> create table product_master (product_id number(7), product_name varchar2(50) not null, code varchar2(10) not null, reorder_treshhold number(5,0), cost number(5,2), price number(5,2), constraint pk_inv primary key(product_id), constraint chk_reorder check(reorder_treshhold > 0));
+
+Table created.
+
+SQL> desc product_master;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ PRODUCT_ID                                NOT NULL NUMBER(7)
+ PRODUCT_NAME                              NOT NULL VARCHAR2(50)
+ CODE                                      NOT NULL VARCHAR2(10)
+ REORDER_TRESHHOLD                                  NUMBER(5)
+ COST                                               NUMBER(5,2)
+ PRICE                                              NUMBER(5,2)
+
+
+4.SQL> show user 
+USER is "SCOTT"
+SQL> create table emp2( ssn number(9), first_name varchar2(25) not null, last_name varchar2(25) not null, emp_id number(6), salary number(9,2), hire_date date not null, constraint pk_ssn primary key(ssn), constraint uk_emp unique (emp_id)); 
+
+Table created. 
+SQL> desc emp2
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ SSN                                       NOT NULL NUMBER(9)
+ FIRST_NAME                                NOT NULL VARCHAR2(25)
+ LAST_NAME                                 NOT NULL VARCHAR2(25)
+ EMP_ID                                             NUMBER(6)
+ SALARY                                             NUMBER(9,2)
+ HIRE_DATE                                 NOT NULL DATE
+
+
+5.SQL> alter table emp_test2 add constraint emp_id_pk primary key(employee_id);
+
+Table altered.
+
+SQL> desc emp_test2;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ FIRSTNAME                                          VARCHAR2(20)
+ LASTNAME                                           VARCHAR2(20)
+ EMPLOYEE_ID                               NOT NULL NUMBER
+ USERID                                             VARCHAR2(20)
+ SALARY                                             NUMBER
+
+6.SQL> insert into emp_test2 values ('Charles','Johnson',1,'cjohnson',771);
+
+1 row created.
+
+SQL> select * from emp_test2;
+
+FIRSTNAME            LASTNAME             EMPLOYEE_ID USERID
+-------------------- -------------------- ----------- --------------------
+    SALARY
+----------
+Charles              Johnson                        1 cjohnson
+       771
+
+SQL> commit;
+
+Commit complete.
+
+
+7.SQL> insert into emp_test2(firstname,lastname,employee_id,userid,salary) values ('Richard','Ebreu',9,'rebreu',1024);
+
+1 row created.
+
+SQL> commit;
+
+Commit complete.
+
+
+8.SQL> update emp_test2 set lastname= 'Tom' where lastname= (select lastname from emp_test2 where employee_id =4);
+
+1 row updated.
+
+9.SQL> rollback;
+
+Rollback complete.
+
+SQL> select * from emp_test2;
+
+FIRSTNAME            LASTNAME             EMPLOYEE_ID USERID
+-------------------- -------------------- ----------- --------------------
+    SALARY
+----------
+Charles              Johnson                        1 cjohnson
+       771
+
+Richard              Ebreu                          9 rebreu
+      1024
+
+Tim                  Smith                          2 tsmith
+       819
+
+
+FIRSTNAME            LASTNAME             EMPLOYEE_ID USERID
+-------------------- -------------------- ----------- --------------------
+    SALARY
+----------
+Frank                Lucas                          3 Fluca
+      1195
+
+David                Thomas                         4 DThomas
+       790
+
+Ashley               Thompson                       5 athompson
+      1400
+
+
+FIRSTNAME            LASTNAME             EMPLOYEE_ID USERID
+-------------------- -------------------- ----------- --------------------
+    SALARY
+----------
+Kobe                 Bryant                         6 kbryant
+      1900
+
+Michael              Jordan                         7 mjordan
+      2100
+
+Johnson              Lolade                         8 ljohnson
+       558
+
+
+FIRSTNAME            LASTNAME             EMPLOYEE_ID USERID
+-------------------- -------------------- ----------- --------------------
+    SALARY
+----------
+Oprah                Winfrey                       10 owinfrey
+       958
+
+
+10 rows selected.
+
+
+10.
+SQL> update emp_test2 set lastname ='Tom' where lastname = (select lastname from emp_test2 where employee_id =7);
+
+1 row updated.
+
+SQL> commit;
+
+Commit complete
+
+9.SQL> update emp_test2 set salary = 1000 where salary < 900;                                      
+
+4 rows updated.
+
+SQL> commit;
+
+Commit complete.
+
+10. SQL> delete from emp_test2 where firstname = 'Oprah';
+
+1 row deleted.
+
+SQL> commit;
+
+Commit complete.
+
+
+11.For this question i do not really understand it.
+
+12. SQL> rollback;
+
+Rollback complete.
+
+SQL> select * from emp_test2;
+
+FIRSTNAME            LASTNAME             EMPLOYEE_ID USERID
+-------------------- -------------------- ----------- --------------------
+    SALARY
+----------
+Charles              Johnson                        1 cjohnson
+      1000
+
+Richard              Ebreu                          9 rebreu
+      1024
+
+Tim                  Smith                          2 tsmith
+      1000
+
+
+FIRSTNAME            LASTNAME             EMPLOYEE_ID USERID
+-------------------- -------------------- ----------- --------------------
+    SALARY
+----------
+Frank                Lucas                          3 Fluca
+      1195
+
+David                Thomas                         4 DThomas
+      1000
+
+Ashley               Thompson                       5 athompson
+      1400
+
+
+FIRSTNAME            LASTNAME             EMPLOYEE_ID USERID
+-------------------- -------------------- ----------- --------------------
+    SALARY
+----------
+Kobe                 Bryant                         6 kbryant
+      1900
+
+Michael              Tom                            7 mjordan
+      2100
+
+Johnson              Lolade                         8 ljohnson
+      1000
+
+
+9 rows selected.
+
+
+13. a) With delete, you are able to remove the data selected without changing the structure of the table. To get the data back you'll have to use the query rollback;
+    b)Truncate has the same function as delete. The only difference is that it can't be rollback.
+    c)Drop removes not only the data but also the structure of the data. Only the flashback drop option can bring the data back.
+
+14.for this question, i decide to connect to scott schema. so the answer is:
+	SQL> create table emp3 as select * from emp;
+
+Table created.
+
+SQL> desc emp3;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMPNO                                              NUMBER(4)
+ ENAME                                              VARCHAR2(10)
+ JOB                                                VARCHAR2(9)
+ MGR                                                NUMBER(4)
+ HIREDATE                                           DATE
+ SAL                                                NUMBER(7,2)
+ COMM                                               NUMBER(7,2)
+ DEPTNO                                             NUMBER(2)
+
+15.SQL> create table emp4 as select empno,ename,job,sal,deptno from emp;
+
+Table created.
+
+SQL> desc emp4;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMPNO                                              NUMBER(4)
+ ENAME                                              VARCHAR2(10)
+ JOB                                                VARCHAR2(9)
+ SAL                                                NUMBER(7,2)
+ DEPTNO                                             NUMBER(2)
+
+16.SQL> drop table emp4;
+
+Table dropped.
+
+
+17.SQL> create table emp4 as select * from emp;
+
+Table created.
+
+
+18.SQL> alter table emp4 rename to test5;
+
+Table altered.
+
+SQL> desc test5
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMPNO                                              NUMBER(4)
+ ENAME                                              VARCHAR2(10)
+ JOB                                                VARCHAR2(9)
+ MGR                                                NUMBER(4)
+ HIREDATE                                           DATE
+ SAL                                                NUMBER(7,2)
+ COMM                                               NUMBER(7,2)
+ DEPTNO                                             NUMBER(2)
+
+
+19. A primary key uniquely defines each rows in a table. It cannot not accept null values.we can only have have only one primary key in a table.
+   A unique key does not allow duplicate values there can be many unique keys.
+
+
+20.SQL> alter table emp2 drop constraint uk_emp;
+
+Table altered.
+
+21.SQL> alter table product_master disable constraint pk_inv;
+
+Table altered.
+
+
+22.SQL> alter table emp2 add sex varchar2(1);
+
+Table altered.
+
+SQL> desc emp2;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ SSN                                       NOT NULL NUMBER(9)
+ FIRST_NAME                                NOT NULL VARCHAR2(25)
+ LAST_NAME                                 NOT NULL VARCHAR2(25)
+ EMP_ID                                             NUMBER(6)
+ SALARY                                             NUMBER(9,2)
+ HIRE_DATE                                 NOT NULL DATE
+ SEX                                                VARCHAR2(1)   
+
+23.SQL> connect sys
+Enter password: 
+Connected.
+SQL> alter table emp_test2 modify (lastname varchar2(30), firstname varchar2(30));
+
+Table altered.
+
+SQL> desc emp_test2;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ FIRSTNAME                                          VARCHAR2(30)
+ LASTNAME                                           VARCHAR2(30)
+ EMPLOYEE_ID                               NOT NULL NUMBER
+ USERID                                             VARCHAR2(20)
+ SALARY                                             NUMBER
+
+
+24.SQL> create view employees_vw as select employee_id,last_name||' '||first_name employee, department_id from hr.employees;
+
+View created.
+
+SQL> desc employees_vw;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMPLOYEE_ID                               NOT NULL NUMBER(6)
+ EMPLOYEE                                           VARCHAR2(46)
+ DEPARTMENT_ID                                      NUMBER(4)
+
+
+25.SQL> select*from employees_vw;
+
+EMPLOYEE_ID EMPLOYEE                                       DEPARTMENT_ID
+----------- ---------------------------------------------- -------------
+        100 King Steven                                               90
+        101 Kochhar Neena                                             90
+        102 De Haan Lex                                               90
+        103 Hunold Alexander                                          60
+        104 Ernst Bruce                                               60
+        105 Austin David                                              60
+        106 Pataballa Valli                                           60
+        107 Lorentz Diana                                             60
+        108 Greenberg Nancy                                          100
+        109 Faviet Daniel                                            100
+        110 Chen John                                                100
+
+EMPLOYEE_ID EMPLOYEE                                       DEPARTMENT_ID
+----------- ---------------------------------------------- -------------
+        111 Sciarra Ismael                                           100
+        112 Urman Jose Manuel                                        100
+        113 Popp Luis                                                100
+        114 Raphaely Den                                              30
+        115 Khoo Alexander                                            30
+        116 Baida Shelli                                              30
+        117 Tobias Sigal                                              30
+        118 Himuro Guy                                                30
+        119 Colmenares Karen                                          30
+        120 Weiss Matthew                                             50
+        121 Fripp Adam                                                50
+
+EMPLOYEE_ID EMPLOYEE                                       DEPARTMENT_ID
+----------- ---------------------------------------------- -------------
+        122 Kaufling Payam                                            50
+        123 Vollman Shanta                                            50
+        124 Mourgos Kevin                                             50
+        125 Nayer Julia                                               50
+        126 Mikkilineni Irene                                         50
+        127 Landry James                                              50
+        128 Markle Steven                                             50
+        129 Bissot Laura                                              50
+        130 Atkinson Mozhe                                            50
+        131 Marlow James                                              50
+        132 Olson TJ                                                  50
+
+EMPLOYEE_ID EMPLOYEE                                       DEPARTMENT_ID
+----------- ---------------------------------------------- -------------
+        133 Mallin Jason                                              50
+        134 Rogers Michael                                            50
+        135 Gee Ki                                                    50
+        136 Philtanker Hazel                                          50
+        137 Ladwig Renske                                             50
+        138 Stiles Stephen                                            50
+        139 Seo John                                                  50
+        140 Patel Joshua                                              50
+        141 Rajs Trenna                                               50
+        142 Davies Curtis                                             50
+        143 Matos Randall                                             50
+
+EMPLOYEE_ID EMPLOYEE                                       DEPARTMENT_ID
+----------- ---------------------------------------------- -------------
+        144 Vargas Peter                                              50
+        145 Russell John                                              80
+        146 Partners Karen                                            80
+        147 Errazuriz Alberto                                         80
+        148 Cambrault Gerald                                          80
+        149 Zlotkey Eleni                                             80
+        150 Tucker Peter                                              80
+        151 Bernstein David                                           80
+        152 Hall Peter                                                80
+        153 Olsen Christopher                                         80
+        154 Cambrault Nanette                                         80
+
+EMPLOYEE_ID EMPLOYEE                                       DEPARTMENT_ID
+----------- ---------------------------------------------- -------------
+        155 Tuvault Oliver                                            80
+        156 King Janette                                              80
+        157 Sully Patrick                                             80
+        158 McEwen Allan                                              80
+        159 Smith Lindsey                                             80
+        160 Doran Louise                                              80
+        161 Sewall Sarath                                             80
+        162 Vishney Clara                                             80
+        163 Greene Danielle                                           80
+        164 Marvins Mattea                                            80
+        165 Lee David                                                 80
+
+EMPLOYEE_ID EMPLOYEE                                       DEPARTMENT_ID
+----------- ---------------------------------------------- -------------
+        166 Ande Sundar                                               80
+        167 Banda Amit                                                80
+        168 Ozer Lisa                                                 80
+        169 Bloom Harrison                                            80
+        170 Fox Tayler                                                80
+        171 Smith William                                             80
+        172 Bates Elizabeth                                           80
+        173 Kumar Sundita                                             80
+        174 Abel Ellen                                                80
+        175 Hutton Alyssa                                             80
+        176 Taylor Jonathon                                           80
+
+EMPLOYEE_ID EMPLOYEE                                       DEPARTMENT_ID
+----------- ---------------------------------------------- -------------
+        177 Livingston Jack                                           80
+        178 Grant Kimberely
+        179 Johnson Charles                                           80
+        180 Taylor Winston                                            50
+        181 Fleaur Jean                                               50
+        182 Sullivan Martha                                           50
+        183 Geoni Girard                                              50
+        184 Sarchand Nandita                                          50
+        185 Bull Alexis                                               50
+        186 Dellinger Julia                                           50
+        187 Cabrio Anthony                                            50
+
+EMPLOYEE_ID EMPLOYEE                                       DEPARTMENT_ID
+----------- ---------------------------------------------- -------------
+        188 Chung Kelly                                               50
+        189 Dilly Jennifer                                            50
+        190 Gates Timothy                                             50
+        191 Perkins Randall                                           50
+        192 Bell Sarah                                                50
+        193 Everett Britney                                           50
+        194 McCain Samuel                                             50
+        195 Jones Vance                                               50
+        196 Walsh Alana                                               50
+        197 Feeney Kevin                                              50
+        198 OConnell Donald                                           50
+
+EMPLOYEE_ID EMPLOYEE                                       DEPARTMENT_ID
+----------- ---------------------------------------------- -------------
+        199 Grant Douglas                                             50
+        200 Whalen Jennifer                                           10
+        201 Hartstein Michael                                         20
+        202 Fay Pat                                                   20
+        203 Mavris Susan                                              40
+        204 Baer Hermann                                              70
+        205 Higgins Shelley                                          110
+        206 Gietz William                                            110
+
+107 rows selected.
+
+
+26.SQL> create view deptvw as select employee_id,last_name,department_id from hr.employees;
+
+View created.
+
+SQL> desc deptvw;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMPLOYEE_ID                               NOT NULL NUMBER(6)
+ LAST_NAME                                 NOT NULL VARCHAR2(25)
+ DEPARTMENT_ID                                      NUMBER(4)
+
+50.SQL> drop view deptvw;
+
+View dropped.
+
+SQL> create view deptvw as select employee_id empno, last_name employee, department_id deptno from hr.employees;
+
+View created.
+
+SQL> desc deptvw;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMPNO                                     NOT NULL NUMBER(6)
+ EMPLOYEE                                  NOT NULL VARCHAR2(25)
+ DEPTNO                                             NUMBER(4)
+
+
+27.
+
+28.
+
+29.
+
+30.
+
+31.SQL> connect scott / tiger
+Connected.
+SQL> drop table product_master;
+
+Table dropped.
+
+32.SQL> create table faculty (fid number(9), i_name varchar(25), i_loc varchar(25), constraint pk primary key(fid));
+
+Table created.
+
+SQL> desc faculty;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ FID                                       NOT NULL NUMBER(9)
+ I_NAME                                             VARCHAR2(25)
+ I_LOC                                              VARCHAR2(25)
+
+
+33.SQL> create table speciality (spid number(9), sp_desc varchar(25), constraint pk2 primary key(spid));
+
+Table created.
+
+SQL> desc speciality;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ SPID                                      NOT NULL NUMBER(9)
+ SP_DESC                                            VARCHAR2(25)
+
+34.SQL> create table fac_speciality(fid number(9), spid number(9), constraint fk foreign key (fid) references faculty(fid), constraint fk1 foreign key (spid) references speciality(spid));
+
+Table created.
+
+SQL> desc fac_speciality;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ FID                                                NUMBER(9)
+ SPID                                               NUMBER(9)
+
+
+35. SQL> create table student(sid number(9), name varchar2(25), major varchar2(25), grade_level varchar2(25), age number(9), advisor number(9), constraint s_pk primary key(sid), constraint advisor_fk foreign key(advisor) references faculty(fid));
+
+Table created.
+
+SQL> desc student;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ SID                                       NOT NULL NUMBER(9)
+ NAME                                               VARCHAR2(25)
+ MAJOR                                              VARCHAR2(25)
+ GRADE_LEVEL                                        VARCHAR2(25)
+ AGE                                                NUMBER(9)
+ ADVISOR                                            NUMBER(9)
+
+36.SQL> create table class (c_name varchar2(25), time timestamp, room varchar2(25), fid number(9), constraint c_pk primary key(c_name), constraint f_fk foreign key(fid) references faculty(fid));
+
+Table created.
+
+SQL> desc class;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ C_NAME                                    NOT NULL VARCHAR2(25)
+ TIME                                               TIMESTAMP(6)
+ ROOM                                               VARCHAR2(25)
+ FID                                                NUMBER(9)
+
+37.SQL> create table enrollment(sid number(9), c_name varchar2(25), constraint c_fk foreign key(c_NAME) references class(c_name), constraint s_fk foreign key(sid)references student(sid));
+
+Table created.
+
+SQL> desc enrollment;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ SID                                                NUMBER(9)
+ C_NAME                                             VARCHAR2(25)
+
+
+38.SQL> insert into faculty values(100,'AKIN','100BC'); 
+
+1 row created.
+
+SQL>  insert into faculty values(200,'SMITH','200BC');   
+
+1 row created.
+
+SQL> INSERT INTO FACULTY VALUES(300,'WILLIAMS','300BC');
+
+1 row created.
+
+SQL> INSERT INTO FACULTY VALUES(400,'RONDER','400BC');
+
+1 row created.
+SQL> INSERT INTO FACULTY VALUES(500,'ROUSEY','500BC');
+
+1 row created.
+
+SQL> INSERT INTO FACULTY VALUES(600,'TYSON','600BC');
+
+1 row created.
+SQL> INSERT INTO FACULTY VALUES(700,'SMITH',' ');
+
+1 row created.
+
+SQL> INSERT INTO FACULTY VALUES(800,'KENNY',' ');
+
+1 row created.
+
+SQL> INSERT INTO FACULTY VALUES(900,'BALIS','900AD');
+
+1 row created.
+
+SQL> SELECT * FROM FACULTY;
+
+       FID I_NAME                    I_LOC
+---------- ------------------------- -------------------------
+       100 AKIN                      100BC
+       200 SMITH                     200BC
+       300 WILLIAMS                  300BC
+       400 RONDER                    400BC
+       500 ROUSEY                    500BC
+       600 TYSON                     600BC
+       700 SMITH
+       800 KENNY
+       900 BALIS                     900AD
+
+9 rows selected.
+
+39. I had to modify the constraint.
+
+SQL> alter table speciality modify sp_desc varchar2(30);
+
+Table altered.
+
+
+SQL> select * from speciality;
+
+      SPID SP_DESC
+---------- ------------------------------
+         1 Firewall
+         2 Database Admin
+         3 End User Migration
+         4 Defense Support
+         5 Expert System Maintenance
+         6 Information Technology
+         7 Data Base Management Systems
+         8 Quality Assurance
+         9 Visual Basic
+        10 Database Development Support
+        11 Defense Management
+
+      SPID SP_DESC
+---------- ------------------------------
+        12 Marine Reconnaissance
+
+12 rows selected.
+
+40.I made a mistake on the first 6 rows so i had to to update the table before continuing
+
+SQL> update fac_speciality set fid = 300 where spid in (4,5,6);
+
+3 rows updated.
+
+
+SQL> insert into fac_speciality values(700,007);
+
+1 row created.
+
+SQL> insert into fac_speciality values(700,008);
+
+1 row created.
+
+SQL> insert into fac_speciality values(700,009);
+
+1 row created.
+
+SQL> insert into fac_speciality values(100,010); 
+
+1 row created.
+
+SQL> insert into fac_speciality values(100,002);
+
+1 row created.
+
+SQL> insert into fac_speciality values(100,005);
+
+1 row created.
+
+SQL> insert into fac_speciality values(100,003);
+
+1 row created.
+
+SQL> insert into fac_speciality values(500,011);
+
+1 row created.
+
+SQL> insert into fac_speciality values(400,007);
+
+1 row created.
+
+SQL> insert into fac_speciality values(800,008);
+
+1 row created.
+
+SQL> insert into fac_speciality values(900,009);
+
+1 row created.
+
+
+SQL> select * from fac_speciality;
+
+       FID       SPID
+---------- ----------
+       100          1
+       200          2
+       200          3
+       300          4
+       300          5
+       300          6
+       700          7
+       700          8
+       700          9
+       100         10
+       100          2
+
+       FID       SPID
+---------- ----------
+       100          5
+       100          3
+       500         11
+       400          7
+       800          8
+       900          9
+
+17 rows selected.
+
+
+41.SQL> insert into student values(100,'Jones','MIS','GR',35,NULL);
+
+1 row created.
+
+SQL> insert into student values(200,'Thomas','MIS','FR',21,100);
+
+1 row created.
+
+SQL> insert into student values(250,'SAM','MKT S','R',24,200);
+
+1 row created.
+
+SQL> 
+SQL> insert into student values(300,'CLARA','MKT','SR',28,300);
+
+1 row created.
+
+SQL> insert into student values(350,'MORRIS','MIS','GR',28,null);
+
+1 row created.
+
+SQL> insert into student values(400,'RIDER','MKT','SR',30,100);
+
+1 row created.
+
+SQL> insert into student values(450,'JONAS','SR',NULL,NULL,NULL);
+
+1 row created.
+
+SQL> insert into student values(500,'CARTER','MGMT',NULL,NULL,100);
+
+1 row created.
+
+SQL> INSERT INTO STUDENT VALUES(700,'AMBER',NULL,NULL,NULL,NULL);
+
+1 row created.
+
+SQL> INSERT INTO STUDENT VALUES(800,'SMITH','ACCT','FR',18,200);
+
+1 row created.
+
+SQL> INSERT INTO STUDENT VALUES(900,'THOMAS','BIO','SR',25,100);
+
+1 row created.
+
+SQL> SELECT * FROM STUDENT;
+
+       SID NAME                      MAJOR
+---------- ------------------------- -------------------------
+GRADE_LEVEL                      AGE    ADVISOR
+------------------------- ---------- ----------
+       100 Jones                     MIS
+GR                                35
+
+       200 Thomas                    MIS
+FR                                21        100
+
+       250 SAM                       MKT S
+R                                 24        200
+
+
+       SID NAME                      MAJOR
+---------- ------------------------- -------------------------
+GRADE_LEVEL                      AGE    ADVISOR
+------------------------- ---------- ----------
+       300 CLARA                     MKT
+SR                                28        300
+
+       350 MORRIS                    MIS
+GR                                28
+
+       400 RIDER                     MKT
+SR                                30        100
+
+
+       SID NAME                      MAJOR
+---------- ------------------------- -------------------------
+GRADE_LEVEL                      AGE    ADVISOR
+------------------------- ---------- ----------
+       450 JONAS                     SR
+
+
+       500 CARTER                    MGMT
+                                            100
+
+       700 AMBER
+
+
+
+       SID NAME                      MAJOR
+---------- ------------------------- -------------------------
+GRADE_LEVEL                      AGE    ADVISOR
+------------------------- ---------- ----------
+       800 SMITH                     ACCT
+FR                                18        200
+
+       900 THOMAS                    BIO
+SR                                25        100
+
+
+11 rows selected.
+
+
+42.I had to modify the constraint of the time to insert the data in the table.
+SQL> alter table class modify time varchar2(25);
+
+Table altered.
+
+SQL> desc class;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ C_NAME                                    NOT NULL VARCHAR2(25)
+ TIME                                               VARCHAR2(25)
+ ROOM                                               VARCHAR2(25)
+ FID                                                NUMBER(9)
+SQL> INSERT INTO class values('INSS222','7:30M','201BC',300);
+
+1 row created.
+
+SQL> INSERT INTO CLASS VALUES('INSS301','9:35M','220BC',200);
+
+1 row created.
+
+SQL> INSERT INTO CLASS VALUES('INSS225','7:30M','220BC',NULL);
+
+1 row created.
+
+SQL> INSERT INTO CLASS VALUES('INSS421','6:45M','330BC',400);
+
+1 row created.
+
+SQL> INSERT INTO CLASS VALUES('INSS499','2:30P','100',NULL);
+
+1 row created.
+
+SQL> INSERT INTO CLASS VALUES('MKT461','8:30W','331BC',600);
+
+1 row created.
+
+SQL> INSERT INTO CLASS VALUES('MKT499','10.45M','500AD',400);
+
+1 row created.
+
+SQL> INSERT INTO CLASS VALUES('INSS641','9:50TH','333BC',100);
+
+1 row created.
+
+SQL> INSERT INTO CLASS VALUES('INSS111','7:15W','355BC',200);
+
+1 row created.
+
+SQL> INSERT INTO CLASS VALUES('INSS620','5:30T','220BC',300);
+
+1 row created.
+
+SQL> SELECT * FROM CLASS;
+
+C_NAME                    TIME                      ROOM
+------------------------- ------------------------- -------------------------
+       FID
+----------
+INSS222                   7:30M                     201BC
+       300
+
+INSS301                   9:35M                     220BC
+       200
+
+INSS225                   7:30M                     220BC
+
+
+
+C_NAME                    TIME                      ROOM
+------------------------- ------------------------- -------------------------
+       FID
+----------
+INSS421                   6:45M                     330BC
+       400
+
+INSS499                   2:30P                     100
+
+
+MKT461                    8:30W                     331BC
+       600
+
+
+C_NAME                    TIME                      ROOM
+------------------------- ------------------------- -------------------------
+       FID
+----------
+MKT499                    10.45M                    500AD
+       400
+
+INSS641                   9:50TH                    333BC
+       100
+
+INSS111                   7:15W                     355BC
+       200
+
+
+C_NAME                    TIME                      ROOM
+------------------------- ------------------------- -------------------------
+       FID
+----------
+INSS620                   5:30T                     220BC
+       300
+
+
+10 rows selected.
+
+
+43.The c_name INSS651 does not exist in table class, which create  an integrity violation in table enrollment.Thus, i will need to create the c_name INSS651 in table to help students with sid of 100 and 350 to enroll in that class.
+ 
+SQL> insert into class VALUES ('INSS651',NULL,NULL,NULL);
+
+1 row created.
+
+Also, i had to create few more classes in table to be able to insert all the data.
+SQL> SELECT * FROM ENROLLMENT;
+
+       SID C_NAME
+---------- -------------------------
+       100 INSS222
+       200 INSS111
+       100 INSS651
+       350 INSS610
+       350 INSS651
+       200 INSS301
+       200 INSS421
+       400 MKT620
+       400 INSS499
+       400 MKT421
+       450 INSS225
+
+       SID C_NAME
+---------- -------------------------
+       450 INSS301
+       100 INSS641
+       700 INSS111
+       700 INSS499
+       800 MKT461
+       900 INSS301
+
+17 rows selected.
+
+
+44.i did not put some names in upper case( it was a mistake).
+SQL> select name, c_name from student join enrollment using (sid);
+
+NAME                      C_NAME
+------------------------- -------------------------
+Jones                     INSS222
+Thomas                    INSS111
+Jones                     INSS651
+MORRIS                    INSS610
+MORRIS                    INSS651
+Thomas                    INSS301
+Thomas                    INSS421
+RIDER                     MKT620
+RIDER                     INSS499
+RIDER                     MKT421
+JONAS                     INSS225
+
+NAME                      C_NAME
+------------------------- -------------------------
+JONAS                     INSS301
+Jones                     INSS641
+AMBER                     INSS111
+AMBER                     INSS499
+SMITH                     MKT461
+THOMAS                    INSS301
+
+17 rows selected.
+
+
+45.SQL> select name,major,i_name from student join faculty on (advisor=fid);
+
+NAME                      MAJOR                     I_NAME
+------------------------- ------------------------- -------------------------
+Thomas                    MIS                       AKIN
+SAM                       MKT S                     SMITH
+CLARA                     MKT                       WILLIAMS
+RIDER                     MKT                       AKIN
+CARTER                    MGMT                      AKIN
+SMITH                     ACCT                      SMITH
+THOMAS                    BIO                       AKIN
+
+7 rows selected.
+
+46.SQL> select i_name, sp_desc from faculty join fac_speciality using(fid) join speciality using(spid);
+
+I_NAME                    SP_DESC
+------------------------- ------------------------------
+AKIN                      Firewall
+SMITH                     Database Admin
+SMITH                     End User Migration
+WILLIAMS                  Defense Support
+WILLIAMS                  Expert System Maintenance
+WILLIAMS                  Information Technology
+SMITH                     Data Base Management Systems
+SMITH                     Quality Assurance
+SMITH                     Visual Basic
+AKIN                      Database Development Support
+AKIN                      Database Admin
+
+I_NAME                    SP_DESC
+------------------------- ------------------------------
+AKIN                      Expert System Maintenance
+AKIN                      End User Migration
+ROUSEY                    Defense Management
+RONDER                    Data Base Management Systems
+KENNY                     Quality Assurance
+BALIS                     Visual Basic
+
+17 rows selected.
+
+
+47.SQL> select fid, i_name from faculty join fac_speciality using (fid) join speciality using(spid) where sp_desc like 'Marine Reconnaissance';
+
+no rows selected
+
+48.SQL> select name,age from student join faculty on (advisor=fid) where i_name like 'TYSON';
+
+no rows selected
+
+49.SQL> SELECT NAME,I_NAME FROM student join faculty on (advisor=fid);
+
+NAME                      I_NAME
+------------------------- -------------------------
+Thomas                    AKIN
+SAM                       SMITH
+CLARA                     WILLIAMS
+RIDER                     AKIN
+CARTER                    AKIN
+SMITH                     SMITH
+THOMAS                    AKIN
+
+7 rows selected.
+
+50.SQL> create table student2 as select * from student;
+
+Table created.
+
+SQL> select * from student2;
+
+       SID NAME                      MAJOR
+---------- ------------------------- -------------------------
+GRADE_LEVEL                      AGE    ADVISOR
+------------------------- ---------- ----------
+       100 Jones                     MIS
+GR                                35
+
+       200 Thomas                    MIS
+FR                                21        100
+
+       250 SAM                       MKT S
+R                                 24        200
+
+
+       SID NAME                      MAJOR
+---------- ------------------------- -------------------------
+GRADE_LEVEL                      AGE    ADVISOR
+------------------------- ---------- ----------
+       300 CLARA                     MKT
+SR                                28        300
+
+       350 MORRIS                    MIS
+GR                                28
+
+       400 RIDER                     MKT
+SR                                30        100
+
+
+       SID NAME                      MAJOR
+---------- ------------------------- -------------------------
+GRADE_LEVEL                      AGE    ADVISOR
+------------------------- ---------- ----------
+       450 JONAS                     SR
+
+
+       500 CARTER                    MGMT
+                                            100
+
+       700 AMBER
+
+
+
+       SID NAME                      MAJOR
+---------- ------------------------- -------------------------
+GRADE_LEVEL                      AGE    ADVISOR
+------------------------- ---------- ----------
+       800 SMITH                     ACCT
+FR                                18        200
+
+       900 THOMAS                    BIO
+SR                                25        100
+
+
+11 rows selected.
+
+SQL> create table class2 as select * from class;
+
+Table created.
+SQL> select * from class;
+
+C_NAME                    TIME                      ROOM
+------------------------- ------------------------- -------------------------
+       FID
+----------
+INSS222                   7:30M                     201BC
+       300
+
+INSS301                   9:35M                     220BC
+       200
+
+INSS225                   7:30M                     220BC
+
+
+
+C_NAME                    TIME                      ROOM
+------------------------- ------------------------- -------------------------
+       FID
+----------
+INSS421                   6:45M                     330BC
+       400
+
+INSS499                   2:30P                     100
+
+
+MKT461                    8:30W                     331BC
+       600
+
+
+C_NAME                    TIME                      ROOM
+------------------------- ------------------------- -------------------------
+       FID
+----------
+MKT499                    10.45M                    500AD
+       400
+
+INSS641                   9:50TH                    333BC
+       100
+
+INSS111                   7:15W                     355BC
+       200
+
+
+C_NAME                    TIME                      ROOM
+------------------------- ------------------------- -------------------------
+       FID
+----------
+INSS620                   5:30T                     220BC
+       300
+
+INSS651
+
+
+INSS610
+
+
+
+C_NAME                    TIME                      ROOM
+------------------------- ------------------------- -------------------------
+       FID
+----------
+MKT620
+
+
+MKT421
+
+
+
+14 rows selected.
+
+
+SQL> create table faculty2 as select * from faculty;
+
+Table created.
+
+SQL> select * from faculty2;
+
+       FID I_NAME                    I_LOC
+---------- ------------------------- -------------------------
+       100 AKIN                      100BC
+       200 SMITH                     200BC
+       300 WILLIAMS                  300BC
+       400 RONDER                    400BC
+       500 ROUSEY                    500BC
+       600 TYSON                     600BC
+       700 SMITH
+       800 KENNY
+       900 BALIS                     900AD
+
+9 rows selected.
+
+
+51.SQL> drop table student2;
+
+Table dropped.
+
+SQL> drop table class2;
+
+Table dropped.
+
+SQL> drop table faculty2;
+
+Table dropped.
+
+
+52.SQL> create table test8 as select * from scott.emp;
+
+Table created.
+
+SQL> desc test8;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMPNO                                              NUMBER(4)
+ ENAME                                              VARCHAR2(10)
+ JOB                                                VARCHAR2(9)
+ MGR                                                NUMBER(4)
+ HIREDATE                                           DATE
+ SAL                                                NUMBER(7,2)
+ COMM                                               NUMBER(7,2)
+ DEPTNO                                             NUMBER(2)
+
+
+53.SQL> update test8 set sal = 3200, job='SALESMAN',DEPTNO=40 WHERE ENAME ='SMITH';
+
+1 row updated.
+SQL> SELECT ENAME,SAL, JOB , DEPTNO FROM TEST8 WHERE ENAME = 'SMITH';
+
+ENAME             SAL JOB           DEPTNO
+---------- ---------- --------- ----------
+SMITH            3200 SALESMAN          40
+
+
+54.SQL> UPDATE TEST8 SET SAL = 72000,JOB = 'BOSS' WHERE ENAME ='JAMES';
+
+1 row updated.
+
+SQL> COMMIT;
+
+Commit complete.
+
+
+55.SQL> DELETE FROM TEST8  ENAME WHERE JOB NOT LIKE 'PRESIDENT'AND DEPTNO =20;
+
+4 rows deleted.
+SQL> COMMIT;
+
+Commit complete.
+
+
+56.SQL> DELETE FROM TEST8 COMM WHERE COMM IS NOT NULL;
+
+4 rows deleted.
+
+57.SQL> ROLLBACK;
+
+Rollback complete.
+
+58.SQL> DELETE TEST8;
+
+10 rows deleted.
+SQL> COMMIT;
+
+Commit complete.
+
+
+59.SQL> ALTER TABLE TEST8 RENAME TO TEST9;
+
+Table altered.
+
+
+60.SQL> DROP TABLE TEST9;
+
+Table dropped.
+
+61.A primary uniquely identifies each rows in a table.It does not allow nulls, does not allow duplicates meaning you repeat a data twice, it is the potential parent to a column that has a foreign key on a column in a different table.
+
+62. The foreign key references the primary key in another table. In other words, it represents the child of the primary key in another table. 
+
+63.A primary key cannot be null. The unique key can take the value null. There is only one primary key per table, but there can be multiple unique keys in a table.
+
+64.the foreign key reference the primary key in another table. Let's say the primary is the parent. Saying so, the foreign key will be the child.
+
+65. the check constraint enforces the integrity rule in a table. In other words, the check constraint make sure that the primary key, the foreign and all other rules are respected. The check constraint returns either true or unknown.
+
+66.SQL> select last_name,first_name, department_name from hr.employees join hr.departments using(department_id);
+
+LAST_NAME                 FIRST_NAME           DEPARTMENT_NAME
+------------------------- -------------------- ------------------------------
+Whalen                    Jennifer             Administration
+Fay                       Pat                  Marketing
+Hartstein                 Michael              Marketing
+Tobias                    Sigal                Purchasing
+Colmenares                Karen                Purchasing
+Baida                     Shelli               Purchasing
+Raphaely                  Den                  Purchasing
+Khoo                      Alexander            Purchasing
+Himuro                    Guy                  Purchasing
+Mavris                    Susan                Human Resources
+Feeney                    Kevin                Shipping
+
+LAST_NAME                 FIRST_NAME           DEPARTMENT_NAME
+------------------------- -------------------- ------------------------------
+Fleaur                    Jean                 Shipping
+Fripp                     Adam                 Shipping
+Gates                     Timothy              Shipping
+Gee                       Ki                   Shipping
+Geoni                     Girard               Shipping
+Grant                     Douglas              Shipping
+Jones                     Vance                Shipping
+Kaufling                  Payam                Shipping
+Ladwig                    Renske               Shipping
+Everett                   Britney              Shipping
+Dilly                     Jennifer             Shipping
+
+LAST_NAME                 FIRST_NAME           DEPARTMENT_NAME
+------------------------- -------------------- ------------------------------
+Dellinger                 Julia                Shipping
+Davies                    Curtis               Shipping
+Chung                     Kelly                Shipping
+Cabrio                    Anthony              Shipping
+Bull                      Alexis               Shipping
+Bissot                    Laura                Shipping
+Bell                      Sarah                Shipping
+Atkinson                  Mozhe                Shipping
+Landry                    James                Shipping
+Weiss                     Matthew              Shipping
+Walsh                     Alana                Shipping
+
+LAST_NAME                 FIRST_NAME           DEPARTMENT_NAME
+------------------------- -------------------- ------------------------------
+Vollman                   Shanta               Shipping
+Vargas                    Peter                Shipping
+Taylor                    Winston              Shipping
+Mallin                    Jason                Shipping
+Markle                    Steven               Shipping
+Marlow                    James                Shipping
+Matos                     Randall              Shipping
+McCain                    Samuel               Shipping
+Mikkilineni               Irene                Shipping
+Mourgos                   Kevin                Shipping
+Nayer                     Julia                Shipping
+
+LAST_NAME                 FIRST_NAME           DEPARTMENT_NAME
+------------------------- -------------------- ------------------------------
+OConnell                  Donald               Shipping
+Olson                     TJ                   Shipping
+Patel                     Joshua               Shipping
+Perkins                   Randall              Shipping
+Philtanker                Hazel                Shipping
+Rajs                      Trenna               Shipping
+Rogers                    Michael              Shipping
+Sarchand                  Nandita              Shipping
+Seo                       John                 Shipping
+Stiles                    Stephen              Shipping
+Sullivan                  Martha               Shipping
+
+LAST_NAME                 FIRST_NAME           DEPARTMENT_NAME
+------------------------- -------------------- ------------------------------
+Austin                    David                IT
+Pataballa                 Valli                IT
+Ernst                     Bruce                IT
+Lorentz                   Diana                IT
+Hunold                    Alexander            IT
+Baer                      Hermann              Public Relations
+Abel                      Ellen                Sales
+Ande                      Sundar               Sales
+Banda                     Amit                 Sales
+Bates                     Elizabeth            Sales
+Bernstein                 David                Sales
+
+LAST_NAME                 FIRST_NAME           DEPARTMENT_NAME
+------------------------- -------------------- ------------------------------
+Bloom                     Harrison             Sales
+Cambrault                 Gerald               Sales
+Cambrault                 Nanette              Sales
+Doran                     Louise               Sales
+Errazuriz                 Alberto              Sales
+Fox                       Tayler               Sales
+Greene                    Danielle             Sales
+Hall                      Peter                Sales
+Hutton                    Alyssa               Sales
+Johnson                   Charles              Sales
+King                      Janette              Sales
+
+LAST_NAME                 FIRST_NAME           DEPARTMENT_NAME
+------------------------- -------------------- ------------------------------
+Kumar                     Sundita              Sales
+Lee                       David                Sales
+Livingston                Jack                 Sales
+Marvins                   Mattea               Sales
+McEwen                    Allan                Sales
+Olsen                     Christopher          Sales
+Ozer                      Lisa                 Sales
+Partners                  Karen                Sales
+Russell                   John                 Sales
+Sewall                    Sarath               Sales
+Smith                     Lindsey              Sales
+
+LAST_NAME                 FIRST_NAME           DEPARTMENT_NAME
+------------------------- -------------------- ------------------------------
+Smith                     William              Sales
+Sully                     Patrick              Sales
+Taylor                    Jonathon             Sales
+Tucker                    Peter                Sales
+Tuvault                   Oliver               Sales
+Vishney                   Clara                Sales
+Zlotkey                   Eleni                Sales
+Kochhar                   Neena                Executive
+King                      Steven               Executive
+De Haan                   Lex                  Executive
+Popp                      Luis                 Finance
+
+LAST_NAME                 FIRST_NAME           DEPARTMENT_NAME
+------------------------- -------------------- ------------------------------
+Urman                     Jose Manuel          Finance
+Chen                      John                 Finance
+Faviet                    Daniel               Finance
+Sciarra                   Ismael               Finance
+Greenberg                 Nancy                Finance
+Gietz                     William              Accounting
+Higgins                   Shelley              Accounting
+
+106 rows selected.
+
+
+67.SQL> select last_name, salary from hr.employees where salary>(select salary from hr.employees where last_name ='Chung');
+
+LAST_NAME                     SALARY
+------------------------- ----------
+King                           24000
+Kochhar                        17000
+De Haan                        17000
+Hunold                          9000
+Ernst                           6000
+Austin                          4800
+Pataballa                       4800
+Lorentz                         4200
+Greenberg                      12008
+Faviet                          9000
+Chen                            8200
+
+LAST_NAME                     SALARY
+------------------------- ----------
+Sciarra                         7700
+Urman                           7800
+Popp                            6900
+Raphaely                       11000
+Weiss                           8000
+Fripp                           8200
+Kaufling                        7900
+Vollman                         6500
+Mourgos                         5800
+Russell                        14000
+Partners                       13500
+
+LAST_NAME                     SALARY
+------------------------- ----------
+Errazuriz                      12000
+Cambrault                      11000
+Zlotkey                        10500
+Tucker                         10000
+Bernstein                       9500
+Hall                            9000
+Olsen                           8000
+Cambrault                       7500
+Tuvault                         7000
+King                           10000
+Sully                           9500
+
+LAST_NAME                     SALARY
+------------------------- ----------
+McEwen                          9000
+Smith                           8000
+Doran                           7500
+Sewall                          7000
+Vishney                        10500
+Greene                          9500
+Marvins                         7200
+Lee                             6800
+Ande                            6400
+Banda                           6200
+Ozer                           11500
+
+LAST_NAME                     SALARY
+------------------------- ----------
+Bloom                          10000
+Fox                             9600
+Smith                           7400
+Bates                           7300
+Kumar                           6100
+Abel                           11000
+Hutton                          8800
+Taylor                          8600
+Livingston                      8400
+Grant                           7000
+Johnson                         6200
+
+LAST_NAME                     SALARY
+------------------------- ----------
+Sarchand                        4200
+Bull                            4100
+Bell                            4000
+Everett                         3900
+Whalen                          4400
+Hartstein                      13000
+Fay                             6000
+Mavris                          6500
+Baer                           10000
+Higgins                        12008
+Gietz                           8300
+
+66 rows selected.
+
+
+68.SQL> select first_name||' '||last_name name from hr.employees where department_id =(select department_id from hr.employees where last_name ='Whalen');
+
+NAME
+----------------------------------------------
+Jennifer Whalen
+
+
+69.SQL> select ename, dname from scott.emp join scott.dept using(deptno);
+
+ENAME      DNAME
+---------- --------------
+CLARK      ACCOUNTING
+KING       ACCOUNTING
+MILLER     ACCOUNTING
+JONES      RESEARCH
+FORD       RESEARCH
+ADAMS      RESEARCH
+SMITH      RESEARCH
+SCOTT      RESEARCH
+WARD       SALES
+TURNER     SALES
+ALLEN      SALES
+
+ENAME      DNAME
+---------- --------------
+JAMES      SALES
+BLAKE      SALES
+MARTIN     SALES
+
+14 rows selected.
+
+
+70.SQL> SELECT EMPNO,JOB,LOC FROM SCOTT.DEPT JOIN SCOTT.EMP USING(DEPTNO);
+
+     EMPNO JOB       LOC
+---------- --------- -------------
+      7782 MANAGER   NEW YORK
+      7839 PRESIDENT NEW YORK
+      7934 CLERK     NEW YORK
+      7566 MANAGER   DALLAS
+      7902 ANALYST   DALLAS
+      7876 CLERK     DALLAS
+      7369 CLERK     DALLAS
+      7788 ANALYST   DALLAS
+      7521 SALESMAN  CHICAGO
+      7844 SALESMAN  CHICAGO
+      7499 SALESMAN  CHICAGO
+
+     EMPNO JOB       LOC
+---------- --------- -------------
+      7900 CLERK     CHICAGO
+      7698 MANAGER   CHICAGO
+      7654 SALESMAN  CHICAGO
+
+14 rows selected.
+
+71.SQL> SELECT * FROM SCOTT.SALGRADE;
+
+     GRADE      LOSAL      HISAL
+---------- ---------- ----------
+         1        700       1200
+         2       1201       1400
+         3       1401       2000
+         4       2001       3000
+         5       3001       9999
+
+72.In here i will search all the tables in the schema oe. To find that i'll use the following query:
+
+SQL> select table_name from all_tables where owner='OE';
+
+TABLE_NAME
+--------------------------------------------------------------------------------
+CUSTOMERS
+WAREHOUSES
+ORDER_ITEMS
+ORDERS
+INVENTORIES
+PRODUCT_INFORMATION
+PRODUCT_DESCRIPTIONS
+PROMOTIONS
+PRODUCT_REF_LIST_NESTEDTAB
+SUBCATEGORY_REF_LIST_NESTEDTAB
+
+10 rows selected.
+
+ANd then i'll look for the different field in the order_items column.
+SQL> desc oe.order_items;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ORDER_ID                                  NOT NULL NUMBER(12)
+ LINE_ITEM_ID                              NOT NULL NUMBER(3)
+ PRODUCT_ID                                NOT NULL NUMBER(6)
+ UNIT_PRICE                                         NUMBER(8,2)
+ QUANTITY                                           NUMBER(8)
+ 
+So now i can answer the qustion ask:
+
+SQL> select order_id,product_id from oe.order_items;
+ORDER_ID PRODUCT_ID
+---------- ----------
+      2455       2536
+      2456       2522
+      2456       2537
+      2457       3108
+      2457       3123
+      2457       3127
+      2457       3150
+      2457       3155
+      2457       3170
+      2457       3172
+      2458       3117
+
+  ORDER_ID PRODUCT_ID
+---------- ----------
+      2458       3123
+      2458       3127
+      2458       3134
+      2458       3143
+      2458       3163
+
+665 rows selected.
+
+73.select unit_price,quantity,order_date,order_mode from oe.order_items join oe.orders using(order_id);
+16-AUG-07 02.34.12.234359 PM
+direct
+
+     488.4        114
+
+UNIT_PRICE   QUANTITY
+---------- ----------
+ORDER_DATE
+---------------------------------------------------------------------------
+ORDER_MO
+--------
+16-AUG-07 02.34.12.234359 PM
+direct
+
+        17        115
+16-AUG-07 02.34.12.234359 PM
+direct
+
+
+665 rows selected.
+
+
+74.SQL> select line_item_id,customer_id,warehouse_id from oe.orders join oe.order_items using(order_id) join oe.inventories using(product_id);
+
+
+LINE_ITEM_ID CUSTOMER_ID WAREHOUSE_ID
+------------ ----------- ------------
+           9         116            9
+           1         101            9
+           1         146            9
+           2         146            9
+           3         101            9
+           3         146            9
+
+2074 rows selected.
+
+75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.desc oe.warehouses;75.SQL> select sales_rep_id, marital_status,cust_first_name,cust_last_name from oe.customers join oe.orders using(customer_id);
+SALES_REP_ID MARITAL_STATUS       CUST_FIRST_NAME      CUST_LAST_NAME
+------------ -------------------- -------------------- --------------------
+             single               Maximilian           Henner
+             single               Sachin               Neeson
+             single               Elizabeth            Brown
+             married              Sachin               Spielberg
+         158 single               Ernest               Chandar
+         156 single               Hema                 Voight
+
+105 rows selected.
+
+
+76.SQL> select warehouse_spec, warehouse_name, quantity_on_hand from oe.warehouses join oe.inventories using(warehouse_id);
+
+WAREHOUSE_SPEC
+--------------------------------------------------------------------------------
+WAREHOUSE_NAME                      QUANTITY_ON_HAND
+----------------------------------- ----------------
+
+Bombay                                             6
+
+
+Bombay                                             6
+
+
+Bombay                                             6
+
+
+WAREHOUSE_SPEC
+--------------------------------------------------------------------------------
+WAREHOUSE_NAME                      QUANTITY_ON_HAND
+----------------------------------- ----------------
+
+Bombay                                             6
+
+
+Bombay                                             7
+
+
+Bombay                                             8
+
+
+WAREHOUSE_SPEC
+--------------------------------------------------------------------------------
+WAREHOUSE_NAME                      QUANTITY_ON_HAND
+----------------------------------- ----------------
+
+Bombay                                             9
+
+
+Bombay                                             9
+
+
+Bombay                                             9
+
+
+WAREHOUSE_SPEC
+--------------------------------------------------------------------------------
+WAREHOUSE_NAME                      QUANTITY_ON_HAND
+----------------------------------- ----------------
+
+Bombay                                            10
+
+
+Bombay                                            10
+
+
+Bombay                                            10
+
+
+1112 rows selected.
+
+
+77.SQL> select * from oe.product_descriptions;
+PRODUCT_ID LAN TRANSLATED_NAME
+---------- --- --------------------------------------------------
+TRANSLATED_DESCRIPTION
+--------------------------------------------------------------------------------
+a for anvandning i RAID-applikationer.
+
+      2382 S   HD 18.2GB@10000 /I
+H?rddiskenhet (inbyggd) p? 18,2 GB, SCSI och 10 000 rpm. H?rddiskenheterna Supra
+7 Universal ger ett ojamforligt investeringsskydd och forenklar det for kunderna
+ genom att tillhandah?lla enhetskompatibilitet med m?nga foretagsplattformar.
+
+
+8640 rows selected.
+
+78.SQL>select * from oe.product_information;
+PRODUCT_ID PRODUCT_NAME
+---------- --------------------------------------------------
+PRODUCT_DESCRIPTION
+--------------------------------------------------------------------------------
+CATEGORY_ID WEIGHT_CLASS
+----------- ------------
+WARRANTY_PERIOD
+---------------------------------------------------------------------------
+SUPPLIER_ID PRODUCT_STATUS       LIST_PRICE  MIN_PRICE
+----------- -------------------- ---------- ----------
+CATALOG_URL
+--------------------------------------------------
+http://www.supp-103098.com/cat/off/p2808.html
+
+PRODUCT_ID PRODUCT_NAME
+---------- --------------------------------------------------
+PRODUCT_DESCRIPTION
+--------------------------------------------------------------------------------
+CATEGORY_ID WEIGHT_CLASS
+----------- ------------
+WARRANTY_PERIOD
+---------------------------------------------------------------------------
+SUPPLIER_ID PRODUCT_STATUS       LIST_PRICE  MIN_PRICE
+----------- -------------------- ---------- ----------
+CATALOG_URL
+--------------------------------------------------
+
+
+288 rows selected.
+
+79.SQL>select translated_name, weight_class, supplier_id, product_status, list_price, line_item_id from oe.product_descriptions join oe.product_information using(product_id) join oe.order_items using(product_id);
+TRANSLATED_NAME                                    WEIGHT_CLASS SUPPLIER_ID
+-------------------------------------------------- ------------ -----------
+PRODUCT_STATUS       LIST_PRICE LINE_ITEM_ID
+-------------------- ---------- ------------
+?? ?? - TCS                                                   3      103094
+orderable                    78            9
+
+?? ?? - TCS                                                   3      103094
+orderable                    78            9
+
+?? ?? - TCS                                                   3      103094
+orderable                    78            4
+
+
+19950 rows selected.
+
+
+80.SQL> select * from oe.orders;
+ ORDER_ID
+----------
+ORDER_DATE
+---------------------------------------------------------------------------
+ORDER_MO CUSTOMER_ID ORDER_STATUS ORDER_TOTAL SALES_REP_ID PROMOTION_ID
+-------- ----------- ------------ ----------- ------------ ------------
+07-NOV-06 08.53.25.989889 PM
+direct           117            0      3878.4          163
+
+      2457
+31-OCT-07 10.22.16.162632 PM
+direct           118            5     21586.2          159
+
+
+105 rows selected.
+
+
+81.
+
+
